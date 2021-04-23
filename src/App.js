@@ -1,23 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import Table from "./Table.js";
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
+import "./App.css";
+
+const GHSA_URL =
+  "https://challenge.nfhsnetwork.com/v2/search/events/upcoming?state_association_key=18bad24aaa&card=true&size=50&start=0";
+
+const TSA_URL =
+  "https://challenge.nfhsnetwork.com/v2/search/events/upcoming?state_association_key=542bc38f95&card=true&size=50&start=0";
 
 function App() {
+  const [GHSAEvents, setGHSAEvents] = useState([]);
+  const [TSAEvents, setTSAEvents] = useState([]);
+
+  useEffect(() => {
+    //* makes the fetch
+    getFHSAevents();
+    getTSAevents();
+  }, []);
+
+  const getFHSAevents = () => {
+    fetch(GHSA_URL)
+      .then(res => res.json())
+      .then(data => setGHSAEvents(data.items));
+  };
+
+  const getTSAevents = () => {
+    fetch(TSA_URL)
+      .then(res => res.json())
+      .then(data => setTSAEvents(data.items));
+  };
+
+  console.log(GHSAEvents);
+  console.log(TSAEvents);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Table ghsa={GHSAEvents} tsa={TSAEvents} />
     </div>
   );
 }
