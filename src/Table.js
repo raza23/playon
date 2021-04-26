@@ -4,18 +4,47 @@ import { Table } from "reactstrap";
 var moment = require("moment"); // require
 moment().format();
 // changing to function
-function EventsTable(props) {
+
+const GHSA_URL =
+  "https://challenge.nfhsnetwork.com/v2/search/events/upcoming?state_association_key=18bad24aaa&card=true&size=50&start=0";
+
+const TSA_URL =
+  "https://challenge.nfhsnetwork.com/v2/search/events/upcoming?state_association_key=542bc38f95&card=true&size=50&start=0";
+
+function EventsTable() {
+  const [GHSAEvents, setGHSAEvents] = useState([]);
+  const [TSAEvents, setTSAEvents] = useState([]);
+
+  //
   const [classification, setClassification] = useState("GHSA");
-  const [texasEvents, setTexasEvents] = useState(props.tsa);
+  // const [texasEvents, setTexasEvents] = useState(props.tsa);
   const startRef = useRef("");
   const endRef = useRef("");
   console.log(startRef.current.value);
-  const [startDate, setStartDate] = useState("04");
-  const [endDate, setEndDate] = useState();
+  const [startDate, setStartDate] = useState("04-27");
+  const [endDate, setEndDate] = useState("04-28");
 
   // console.log(props);
   // console.log(classification);
-  console.log("texas", texasEvents);
+
+  useEffect(() => {
+    //* makes the fetch
+    getFHSAevents();
+    getTSAevents();
+  }, []);
+
+  const getFHSAevents = () => {
+    fetch(GHSA_URL)
+      .then(res => res.json())
+      .then(data => setGHSAEvents(data.items));
+  };
+
+  const getTSAevents = () => {
+    fetch(TSA_URL)
+      .then(res => res.json())
+      .then(data => setTSAEvents(data.items));
+  };
+  // console.log("texas", texasEvents);
 
   const changeClass = e => {
     setClassification(e.target.value);
@@ -29,46 +58,39 @@ function EventsTable(props) {
     setEndDate(e.target.value);
   };
 
-  // const filterEvents = () => {
-  //   // debugger;
-  //   // const res = await fetch(
-  //   //   `https://challenge.nfhsnetwork.com/v2/search/events/upcoming?state_association_key=542bc38f95&card=true&size=50&start=0&from=2021-${startRef.current.value}T00:00:00.000Z&to=2021-${endRef.current.value}T00:00:00.000Z`
-  //   // );
-  //   // const data = await res.json();
-  //   // debugger;
-  //   // setTexasEvents(data.items);
-  //   debugger;
-  //   fetch(
-  //     `https://challenge.nfhsnetwork.com/v2/search/events/upcoming?state_association_key=542bc38f95&card=true&size=50&start=0&from=2021-${startRef.current.value}T00:00:00.000Z&to=2021-${endRef.current.value}T00:00:00.000Z`
-  //   )
-  //     .then(res => res.json())
-  //     .then(data => setTexasEvents(data));
-  // };
+  const filterEvents = () => {
+    debugger;
+
+    fetch(
+      `https://challenge.nfhsnetwork.com/v2/search/events/upcoming?state_association_key=18bad24aaa&card=true&size=50&start=0&from=2021-${startDate}T00:00:00.000Z&to=2021-${endDate}T00:00:00.000Z`
+    )
+      .then(res => {
+        debugger;
+        res.json();
+      })
+      .then(data => setTSAEvents(data))
+      .catch(err => {
+        debugger;
+        console.log(err);
+      });
+  };
   console.log(startDate);
-  const texasFilterEvents = props.tsa.filter(event =>
-    event.date.includes(startDate)
-  );
+  // console.log("startref", startRef);
+  console.log(TSAEvents);
+  // const texasFilterEvents = props.tsa.filter(event =>
+  //   event.date.includes(startDate)
+  // );
 
-  const georgiaFilterEvents = props.ghsa.filter(event =>
-    event.date.includes(startDate)
-  );
-  console.log(texasEvents);
+  // const georgiaFilterEvents = props.ghsa.filter(event =>
+  //   event.date.includes(startDate)
+  // );
+  // console.log(texasEvents);
 
-  useEffect(() => {
-    console.log("classification");
-    // filterEvents();
-  });
-
-  const txsaEvents = texasFilterEvents.map(event => {
-    // console.log(moment(event.date, "YYYY-MM"));
+  const txsaEvents = TSAEvents.map(event => {
     const event_time_date = moment(new Date(event.date));
     let time = event_time_date.add(4, "hours").format("h:mma");
     let date = event_time_date.format("LL");
-    // console.log(time.format("h:mma"));
-    // console.log(time.format("LL"));
 
-    // var date_test = new Date(event.date.replace(/-T/g, "/")).toString();
-    // console.log(date_test);
     return (
       <tr key={event.id}>
         <td>{event.key}</td>
@@ -82,13 +104,11 @@ function EventsTable(props) {
     );
   });
 
-  const ghsaEvents = georgiaFilterEvents.map(event => {
-    // console.log(event);
-    var date_test = new Date(event.date.replace(/-T/g, "/"));
+  const ghsaEvents = GHSAEvents.map(event => {
     const event_time_date = moment(new Date(event.date));
     let time = event_time_date.format("h:mma");
     let date = event_time_date.format("LL");
-    // console.log(date_test);
+
     return (
       <tr key={event.id}>
         <td>{event.key}</td>
@@ -109,7 +129,6 @@ function EventsTable(props) {
         <label>
           Choose Classification {"  "}
           <select className="ClassList" onChange={e => changeClass(e)}>
-            {/* <option> Choose Classification</option> */}
             <option value="FHSA"> GHSA </option>
             <option value="TXSA"> TXSA </option>
           </select>
@@ -134,7 +153,7 @@ function EventsTable(props) {
               type="text"
               name="end"
             />
-            {/* <button onClick={() => filterEvents()}>Submit</button> */}
+            <button onClick={filterEvents}>Submit</button>
           </label>
         </form>
       </div>
