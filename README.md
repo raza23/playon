@@ -23,3 +23,5 @@ Using the JavaScript framework of your choice, implement a mobile-friendly JavaS
 Below is a simple mock-up of the UI. Use the mock-up as basis to provide a well-styled and responsive result. Bonus Points: Use a similar look and feel as nfhsnetwork.com
 
 When finished, please upload your code to GitHub or email it back to your recruiter.
+
+<!--  -->
