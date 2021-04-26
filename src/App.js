@@ -1,4 +1,4 @@
-import Table from "./Table.js";
+import EventTable from "./EventTable.js";
 import React, { useState, useEffect } from "react";
 
 import "./App.css";
@@ -36,7 +36,7 @@ function App() {
 
   return (
     <div className="App">
-      <Table ghsa={GHSAEvents} tsa={TSAEvents} />
+      <EventTable ghsa={GHSAEvents} tsa={TSAEvents} />
     </div>
   );
 }

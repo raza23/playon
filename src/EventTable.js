@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Table } from "reactstrap";
+// import Table from "react-bootstrap/Table";
 
 var moment = require("moment"); // require
 moment().format();
@@ -103,43 +104,45 @@ function EventsTable(props) {
   });
 
   return (
-    <div className="Events-Table">
+    <div className="Events-Page">
       {" "}
-      <div className="Filters">
-        <label>
-          Choose Classification {"  "}
-          <select className="ClassList" onChange={e => changeClass(e)}>
-            {/* <option> Choose Classification</option> */}
-            <option value="FHSA"> GHSA </option>
-            <option value="TXSA"> TXSA </option>
-          </select>
-        </label>
-        <form>
+      <header>
+        <div className="Filters">
           <label>
-            Choose Date{"   "}
-            <input
-              onChange={e => filterStartDate(e)}
-              ref={startRef}
-              placeholder="MM-DD"
-              type="text"
-              name="start"
-            />
+            Choose Classification {"  "}
+            <select className="ClassList" onChange={e => changeClass(e)}>
+              {/* <option> Choose Classification</option> */}
+              <option value="FHSA"> GHSA </option>
+              <option value="TXSA"> TXSA </option>
+            </select>
           </label>
-          {/* <label>
+          <form>
+            <label>
+              Choose Date{"   "}
+              <input
+                onChange={e => filterStartDate(e)}
+                ref={startRef}
+                placeholder="MM-DD"
+                type="text"
+                name="start"
+              />
+            </label>
+            {/* <label>
             End Date{"   "}
             <input
-              onChange={e => filterEndDate(e)}
-              ref={endRef}
-              placeholder="MM-DD"
-              type="text"
-              name="end"
+            onChange={e => filterEndDate(e)}
+            ref={endRef}
+            placeholder="MM-DD"
+            type="text"
+            name="end"
             />
             
           </label> */}
-        </form>
-      </div>
+          </form>
+        </div>
+      </header>
       <div>
-        <Table dark>
+        <Table>
           <thead>
             <tr>
               <th>Key</th>
