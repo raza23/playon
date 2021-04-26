@@ -11,6 +11,7 @@ function EventsTable(props) {
   const [classification, setClassification] = useState("Georgia");
   const [texasEvents, setTexasEvents] = useState([props.tsa]);
   const [georgiaEvents, setGeorgiaEvents] = useState([props.ghsa]);
+  const [filter, setFilter] = useState(false);
 
   const startRef = useRef("");
 
