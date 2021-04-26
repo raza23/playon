@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
+import EventSquare from "./EventSquare";
 import { Table } from "reactstrap";
 // import Table from "react-bootstrap/Table";
+import styled from "styled-components";
 
 var moment = require("moment"); // require
 moment().format();
 // changing to function
 function EventsTable(props) {
-  const [classification, setClassification] = useState("GHSA");
+  const [classification, setClassification] = useState("Georgia");
   const [texasEvents, setTexasEvents] = useState(props.tsa);
   const startRef = useRef("");
   const endRef = useRef("");
@@ -60,6 +62,34 @@ function EventsTable(props) {
     // filterEvents();
   });
 
+  // STYLED COMPONENTS
+
+  const Event = styled.div`
+      position: relative;
+      width: 200px;
+      height: 160px;
+      display: inline-block;
+      padding: 5px
+      border: 10px solid red;
+  
+
+      background: #001C34;
+      box-shadow: 0px 1px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 6px;
+    `;
+
+  const Column = styled.div`
+    position: relative;
+
+    float: left;
+    width: 10.33%;
+    padding: 50px;
+    position: relative;
+    // border: 10px solid blue;
+    left: 00px;
+    top: 1px;
+  `;
+
   const txsaEvents = texasFilterEvents.map(event => {
     // console.log(moment(event.date, "YYYY-MM"));
     const event_time_date = moment(new Date(event.date));
@@ -71,16 +101,30 @@ function EventsTable(props) {
     // var date_test = new Date(event.date.replace(/-T/g, "/")).toString();
     // console.log(date_test);
     return (
-      <tr key={event.id}>
-        <td>{event.key}</td>
-        <td>{event.headline}</td>
-        <td>{event.subheadline}</td>
-        <td>
-          {" "}
-          {time} on {date}
-        </td>
-      </tr>
+      <Column>
+        <Event>
+          <EventSquare
+            eventkey={event.key}
+            headline={event.headline}
+            subheadline={event.subheadline}
+            eventtime={time}
+            eventdate={date}
+          />
+        </Event>
+      </Column>
     );
+
+    // return (
+    //   <tr key={event.id}>
+    //     <td>{event.key}</td>
+    //     <td>{event.headline}</td>
+    //     <td>{event.subheadline}</td>
+    //     <td>
+    //       {" "}
+    //       {time} on {date}
+    //     </td>
+    //   </tr>
+    // );
   });
 
   const ghsaEvents = georgiaFilterEvents.map(event => {
@@ -90,17 +134,31 @@ function EventsTable(props) {
     let time = event_time_date.format("h:mma");
     let date = event_time_date.format("LL");
     // console.log(date_test);
+
     return (
-      <tr key={event.id}>
-        <td>{event.key}</td>
-        <td>{event.headline}</td>
-        <td>{event.subheadline}</td>
-        <td>
-          {" "}
-          {time} on {date}
-        </td>
-      </tr>
+      <Column>
+        <Event>
+          <EventSquare
+            eventkey={event.key}
+            headline={event.headline}
+            subheadline={event.subheadline}
+            eventtime={time}
+            eventdate={date}
+          />
+        </Event>
+      </Column>
     );
+    // return (
+    //   <tr key={event.id}>
+    //     <td>{event.key}</td>
+    //     <td>{event.headline}</td>
+    //     <td>{event.subheadline}</td>
+    //     <td>
+    //       {" "}
+    //       {time} on {date}
+    //     </td>
+    //   </tr>
+    // );
   });
 
   return (
@@ -109,11 +167,11 @@ function EventsTable(props) {
       <header>
         <div className="Filters">
           <label>
-            Choose Classification {"  "}
+            Choose State {"  "}
             <select className="ClassList" onChange={e => changeClass(e)}>
               {/* <option> Choose Classification</option> */}
-              <option value="FHSA"> GHSA </option>
-              <option value="TXSA"> TXSA </option>
+              <option value="Georgia"> Georgia </option>
+              <option value="Texas"> Texas</option>
             </select>
           </label>
           <form>
@@ -143,16 +201,7 @@ function EventsTable(props) {
       </header>
       <div>
         <Table>
-          <thead>
-            <tr>
-              <th>Key</th>
-
-              <th>Headline</th>
-              <th>Subheadline</th>
-              <th>Start time</th>
-            </tr>
-          </thead>
-          {classification !== "TXSA" ? (
+          {classification !== "Texas" ? (
             <tbody>{ghsaEvents}</tbody>
           ) : (
             <tbody>{txsaEvents}</tbody>
