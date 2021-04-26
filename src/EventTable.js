@@ -9,11 +9,13 @@ moment().format();
 // changing to function
 function EventsTable(props) {
   const [classification, setClassification] = useState("Georgia");
-  const [texasEvents, setTexasEvents] = useState(props.tsa);
+  const [texasEvents, setTexasEvents] = useState([props.tsa]);
+  const [georgiaEvents, setGeorgiaEvents] = useState([props.ghsa]);
+
   const startRef = useRef("");
 
-  console.log(props.tsa);
-  const [startDate, setStartDate] = useState("04");
+  const [startDate, setStartDate] = useState("04-01");
+  const [endDate, setEndDate] = useState("04-30");
 
   //! STYLED COMPONENTS
 
@@ -45,6 +47,7 @@ function EventsTable(props) {
   // !
 
   console.log("texas", texasEvents);
+  console.log("georgia", georgiaEvents);
 
   const changeClass = e => {
     setClassification(e.target.value);
@@ -54,21 +57,43 @@ function EventsTable(props) {
     setStartDate(e.target.value);
   };
 
-  const texasFilterEvents = props.tsa.filter(event =>
-    event.date.includes(startDate)
-  );
+  const filterEndDate = e => {
+    setEndDate(e.target.value);
+  };
 
-  const georgiaFilterEvents = props.ghsa.filter(event =>
-    event.date.includes(startDate)
-  );
-  console.log(texasEvents);
+  const filterTexasEvents = () => {
+    fetch(
+      `https://challenge.nfhsnetwork.com/v2/search/events/upcoming?state_association_key=542bc38f95&card=true&size=50&start=0&from=2021-${startDate}T00:00:00.000Z&to=2021-${endDate}T23:59:00.000Z`
+    )
+      .then(res => {
+        return res.json();
+      })
+      .then(data => setTexasEvents(data.items))
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const filterGeorgiaEvents = () => {
+    fetch(
+      `https://challenge.nfhsnetwork.com/v2/search/events/upcoming?state_association_key=18bad24aaa&card=true&size=50&start=0&from=2021-${startDate}T00:00:00.000Z&to=2021-${endDate}T23:59:00.000Z`
+    )
+      .then(res => {
+        return res.json();
+      })
+      .then(data => setGeorgiaEvents(data.items))
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     console.log("classification");
-    // filterEvents();
-  }, []);
+    filterTexasEvents();
+    filterGeorgiaEvents();
+  }, [startDate, endDate]);
 
-  const txsaEvents = texasFilterEvents.map(event => {
+  const txsaEvents = texasEvents.map(event => {
     const event_time_date = moment(new Date(event.date));
     let time = event_time_date.add(4, "hours").format("h:mma");
     let date = event_time_date.format("LL");
@@ -88,9 +113,8 @@ function EventsTable(props) {
     );
   });
 
-  const ghsaEvents = georgiaFilterEvents.map(event => {
+  const ghsaEvents = georgiaEvents.map(event => {
     // console.log(event);
-    var date_test = new Date(event.date.replace(/-T/g, "/"));
     const event_time_date = moment(new Date(event.date));
     let time = event_time_date.format("h:mma");
     let date = event_time_date.format("LL");
@@ -126,15 +150,26 @@ function EventsTable(props) {
           </label>
           <form>
             <label>
-              Choose Date{"   "}
+              Start Date{"   "}
               <input
-                onChange={e => filterStartDate(e)}
+                onBlur={e => filterStartDate(e)}
                 ref={startRef}
                 placeholder="MM-DD"
                 type="text"
                 name="start"
               />
             </label>
+            <label>
+              End Date{"   "}
+              <input
+                onBlur={e => filterEndDate(e)}
+                ref={startRef}
+                placeholder="MM-DD"
+                type="text"
+                name="start"
+              />
+            </label>
+            {/* <button onClick={filterEvents}>Submit</button> */}
           </form>
         </div>
       </header>
