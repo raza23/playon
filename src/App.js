@@ -1,6 +1,6 @@
 import Table from "./Table.js";
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
+
 import "./App.css";
 
 const GHSA_URL =
@@ -31,8 +31,8 @@ function App() {
       .then(data => setTSAEvents(data.items));
   };
 
-  console.log(GHSAEvents);
-  console.log(TSAEvents);
+  // console.log(GHSAEvents);
+  // console.log(TSAEvents);
 
   return (
     <div className="App">
