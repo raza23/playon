@@ -34,10 +34,10 @@ function EventsTable(props) {
     position: relative;
 
     float: left;
-    width: 10.33%;
-    padding: 50px;
-    position: relative;
-    // border: 10px solid blue;
+    width: 18.33%;
+    padding: 4px 0px 4px 25px;
+
+    // border: 1px solid blue;
     left: 00px;
     top: 1px;
   `;
