@@ -18,18 +18,17 @@ function EventsTable(props) {
   //! STYLED COMPONENTS
 
   const Event = styled.div`
-      position: relative;
-      width: 200px;
-      height: 160px;
-      display: inline-block;
-      padding: 5px
-      border: 10px solid red;
-  
+    position: relative;
+    width: 200px;
+    height: 160px;
+    display: inline-block;
+    padding: 1px;
+    border: 1px solid white;
 
-      background: #001C34;
-      box-shadow: 0px 1px 20px rgba(0, 0, 0, 0.1);
-      border-radius: 6px;
-    `;
+    background: #001c34;
+    box-shadow: 0px 1px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+  `;
 
   const Column = styled.div`
     position: relative;
