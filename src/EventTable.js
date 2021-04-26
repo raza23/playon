@@ -12,7 +12,7 @@ function EventsTable(props) {
   const [texasEvents, setTexasEvents] = useState(props.tsa);
   const startRef = useRef("");
 
-  // console.log(startRef.current.value);
+  console.log(props.tsa);
   const [startDate, setStartDate] = useState("04");
 
   //! STYLED COMPONENTS
@@ -66,7 +66,7 @@ function EventsTable(props) {
   useEffect(() => {
     console.log("classification");
     // filterEvents();
-  });
+  }, []);
 
   const txsaEvents = texasFilterEvents.map(event => {
     const event_time_date = moment(new Date(event.date));
