@@ -106,11 +106,14 @@ function EventsTable(props) {
     <div className="Events-Table">
       {" "}
       <div className="Filters">
-        <select className="ClassList" onChange={e => changeClass(e)}>
-          <option> Choose Classification</option>
-          <option value="FHSA"> GHSA </option>
-          <option value="TXSA"> TXSA </option>
-        </select>
+        <label>
+          Choose Classification {"  "}
+          <select className="ClassList" onChange={e => changeClass(e)}>
+            {/* <option> Choose Classification</option> */}
+            <option value="FHSA"> GHSA </option>
+            <option value="TXSA"> TXSA </option>
+          </select>
+        </label>
         <form>
           <label>
             Start Date{"   "}
