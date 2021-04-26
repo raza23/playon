@@ -116,26 +116,26 @@ function EventsTable(props) {
         </label>
         <form>
           <label>
-            Start Date{"   "}
+            Choose Date{"   "}
             <input
               onChange={e => filterStartDate(e)}
               ref={startRef}
-              placeholder="MM-YY"
+              placeholder="MM-DD"
               type="text"
               name="start"
             />
           </label>
-          <label>
+          {/* <label>
             End Date{"   "}
             <input
               onChange={e => filterEndDate(e)}
               ref={endRef}
-              placeholder="MM-YY"
+              placeholder="MM-DD"
               type="text"
               name="end"
             />
-            {/* <button onClick={() => filterEvents()}>Submit</button> */}
-          </label>
+            
+          </label> */}
         </form>
       </div>
       <div>
