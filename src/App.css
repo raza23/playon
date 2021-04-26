@@ -30,7 +30,7 @@
 
 .Filters {
   /* background-color: #282c34; */
-  width: 720px;
+  width: 920px;
   height: 100px;
   border-bottom-style: solid;
   border-color: red; /* blue */
@@ -43,6 +43,8 @@
   position: relative;
   font-size: 25px;
   /* left: 100px; */
+  /* border: 3px solid blue; */
+
   padding: 5px 50px 5px 5px;
 }
 

@@ -15,8 +15,8 @@ Using the JavaScript framework of your choice, implement a mobile-friendly JavaS
 
 <!-- 2.  Allows the user to change to the Texas State Association (UIL) using a dropdown menu and updates the results accordingly. The Texas State Association key is 542bc38f95. -->
 
-3.  Allows the user to filter the events by date using a date picker.
-    The API lets you filter on date using the from and to params. from=2021-02-20T21:00:00.000Z&to=2021-04-15T21:00:00.000Z
+<!-- 3.  Allows the user to filter the events by date using a date picker.
+    The API lets you filter on date using the from and to params. from=2021-02-20T21:00:00.000Z&to=2021-04-15T21:00:00.000Z -->
 
 4.  Please provide instructions on how to run the code.
 
