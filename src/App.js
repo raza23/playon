@@ -29,10 +29,8 @@ function App() {
     fetch(TSA_URL)
       .then(res => res.json())
       .then(data => setTSAEvents(data.items));
+    // .then(data => console.log(data.items));
   };
-
-  // console.log(GHSAEvents);
-  // console.log(TSAEvents);
 
   return (
     <div className="App">
