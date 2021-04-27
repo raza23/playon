@@ -1,22 +1,29 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import EventSquare from "./EventSquare";
 import { Table } from "reactstrap";
-// import Table from "react-bootstrap/Table";
+
+import { DateRange } from "react-date-range";
+
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css";
+
 import styled from "styled-components";
 
-var moment = require("moment"); // require
+var moment = require("moment");
 moment().format();
 // changing to function
 function EventsTable(props) {
   const [classification, setClassification] = useState("Georgia");
   const [texasEvents, setTexasEvents] = useState([props.tsa]);
   const [georgiaEvents, setGeorgiaEvents] = useState([props.ghsa]);
-  const [filter, setFilter] = useState(false);
 
-  const startRef = useRef("");
-
-  const [startDate, setStartDate] = useState("04-01");
-  const [endDate, setEndDate] = useState("04-30");
+  const [dates, setDates] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection"
+    }
+  ]);
 
   //! STYLED COMPONENTS
 
@@ -54,15 +61,10 @@ function EventsTable(props) {
     setClassification(e.target.value);
   };
 
-  const filterStartDate = e => {
-    setStartDate(e.target.value);
-  };
-
-  const filterEndDate = e => {
-    setEndDate(e.target.value);
-  };
-
   const filterTexasEvents = () => {
+    let startDate = moment(dates[0].startDate).format("MM-DD");
+    let endDate = moment(dates[0].endDate).format("MM-DD");
+
     fetch(
       `https://challenge.nfhsnetwork.com/v2/search/events/upcoming?state_association_key=542bc38f95&card=true&size=50&start=0&from=2021-${startDate}T00:00:00.000Z&to=2021-${endDate}T23:59:00.000Z`
     )
@@ -76,6 +78,8 @@ function EventsTable(props) {
   };
 
   const filterGeorgiaEvents = () => {
+    let startDate = moment(dates[0].startDate).format("MM-DD");
+    let endDate = moment(dates[0].endDate).format("MM-DD");
     fetch(
       `https://challenge.nfhsnetwork.com/v2/search/events/upcoming?state_association_key=18bad24aaa&card=true&size=50&start=0&from=2021-${startDate}T00:00:00.000Z&to=2021-${endDate}T23:59:00.000Z`
     )
@@ -92,7 +96,7 @@ function EventsTable(props) {
     console.log("classification");
     filterTexasEvents();
     filterGeorgiaEvents();
-  }, [startDate, endDate]);
+  }, [dates]);
 
   const txsaEvents = texasEvents.map(event => {
     const event_time_date = moment(new Date(event.date));
@@ -115,11 +119,9 @@ function EventsTable(props) {
   });
 
   const ghsaEvents = georgiaEvents.map(event => {
-    // console.log(event);
     const event_time_date = moment(new Date(event.date));
-    let time = event_time_date.format("h:mma");
+    let time = event_time_date.add(4, "hours").format("h:mma");
     let date = event_time_date.format("LL");
-    // console.log(date_test);
 
     return (
       <Column>
@@ -138,40 +140,21 @@ function EventsTable(props) {
 
   return (
     <div className="Events-Page">
-      {" "}
+      <DateRange
+        editableDateInputs={true}
+        onChange={item => setDates([item.selection])}
+        moveRangeOnFirstSelection={false}
+        ranges={dates}
+      />
       <header>
         <div className="Filters">
           <label>
             Choose State {"  "}
             <select className="ClassList" onChange={e => changeClass(e)}>
-              {/* <option> Choose Classification</option> */}
               <option value="Georgia"> Georgia </option>
               <option value="Texas"> Texas</option>
             </select>
           </label>
-          <form>
-            <label>
-              Start Date{"   "}
-              <input
-                onBlur={e => filterStartDate(e)}
-                ref={startRef}
-                placeholder="MM-DD"
-                type="text"
-                name="start"
-              />
-            </label>
-            <label>
-              End Date{"   "}
-              <input
-                onBlur={e => filterEndDate(e)}
-                ref={startRef}
-                placeholder="MM-DD"
-                type="text"
-                name="start"
-              />
-            </label>
-            {/* <button onClick={filterEvents}>Submit</button> */}
-          </form>
         </div>
       </header>
       <div>
